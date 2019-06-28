@@ -23,7 +23,7 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include "ics.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -104,6 +104,7 @@ int main(void)
   MX_LPUART1_UART_Init();
   MX_SPI1_Init();
   /* USER CODE BEGIN 2 */
+  sp.id = 10;
 
   /* USER CODE END 2 */
 
@@ -114,35 +115,39 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-    	  short servo_id = 10;
+	  HAL_HalfDuplex_EnableReceiver(&hlpuart1);
+	  HAL_UART_Receive_IT(&hlpuart1, &recv_buf, 1);
+
+//    	  short servo_id = 10;
 
 	  HAL_GPIO_WritePin(GPIOB, GPIO_PIN_7, 0);
 	  HAL_Delay(1000);
 	  HAL_GPIO_WritePin(GPIOB, GPIO_PIN_7, 1);
+	  HAL_Delay(1000);
 
-	  uint8_t uart_buf[30];
-	  uart_buf[0] = 0x00;
-	  uart_buf[1] = 0x00;
-	  uart_buf[2] = 0x00;
-	  uart_buf[3] = 0x00;
-
-	  HAL_HalfDuplex_EnableReceiver(&hlpuart1);
-	  HAL_UART_Receive(&hlpuart1, uart_buf, 4,-1);
-	  uart_buf[0] = 0x60 | servo_id;
-
-	  HAL_HalfDuplex_EnableTransmitter(&hlpuart1);
-	  HAL_UART_Transmit(&hlpuart1, uart_buf, 1,-1);
-
-
-	  HAL_HalfDuplex_EnableReceiver(&hlpuart1);
-	  HAL_UART_Receive(&hlpuart1, uart_buf, 2,-1);
-
-	  uart_buf[0] = 0xa0 | servo_id;
-	  uart_buf[1] = 0x03;
-	  uart_buf[2] = 0x10;
-
-	  HAL_HalfDuplex_EnableTransmitter(&hlpuart1);
-	  HAL_UART_Transmit(&hlpuart1, uart_buf, 3,-1);
+//	  uint8_t uart_buf[30];
+//	  uart_buf[0] = 0x00;
+//	  uart_buf[1] = 0x00;
+//	  uart_buf[2] = 0x00;
+//	  uart_buf[3] = 0x00;
+//
+//	  HAL_HalfDuplex_EnableReceiver(&hlpuart1);
+//	  HAL_UART_Receive(&hlpuart1, uart_buf, 4,-1);
+//	  uart_buf[0] = 0x60 | servo_id;
+//
+//	  HAL_HalfDuplex_EnableTransmitter(&hlpuart1);
+//	  HAL_UART_Transmit(&hlpuart1, uart_buf, 1,-1);
+//
+//
+//	  HAL_HalfDuplex_EnableReceiver(&hlpuart1);
+//	  HAL_UART_Receive(&hlpuart1, uart_buf, 2,-1);
+//
+//	  uart_buf[0] = 0xa0 | servo_id;
+//	  uart_buf[1] = 0x03;
+//	  uart_buf[2] = 0x10;
+//
+//	  HAL_HalfDuplex_EnableTransmitter(&hlpuart1);
+//	  HAL_UART_Transmit(&hlpuart1, uart_buf, 3,-1);
 
   }
   /* USER CODE END 3 */
